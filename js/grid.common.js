@@ -520,7 +520,7 @@ function checkDate (format, date) {
 
 function isEmpty(val)
 {
-	if (val.match(/^s+$/) || val == "")	{
+	if (val.match(/^\s+$/) || val == "")	{
 		return true;
 	} else {
 		return false;
