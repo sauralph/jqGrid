@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<link rel="stylesheet" href="http://github.com/jquery/qunit/raw/master/qunit/qunit.css" type="text/css" media="screen" />
+<script type="text/javascript" src="http://github.com/jquery/qunit/raw/master/qunit/qunit.js"></script>
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/base/jquery-ui.css" type="text/css" media="all" />
+<script src="../js/grid.common.js"></script>
+<script>
+function buildMock(){
+	var mock_aIDs={
+			themodal:"the_modal_id",
+			modalhead:"modal_head_id",
+			modalcontent:"someContent",
+			scrollelm:false,
+			
+			};
+	var mock_content ="<strong>HTML</strong> <em>Content</em>";
+	var mock_parameters ={
+			gbox : "",
+			caption : "Some Caption",
+			jqModal : false,
+			closeOnEscape : true,
+			onClose : function (){
+				ok(true,"OnClose Event Listener Called");
+				start();
+			}
+			
+			};
+	var mock_insert = "#target";
+
+	var mock_position = "#target";
+
+	var mock_append = false;
+
+	return ({
+		mock_aIDs:mock_aIDs,
+		mock_content:mock_content,
+		mock_parameters:mock_parameters,
+		
+		mock_insert:mock_insert,
+		mock_position:mock_position,
+		mock_append:mock_append
+		});
+
+	
+}
+
+$(document).ready(function(){
+    /*
+    
+    Call to gloabally defined objects:UNTESTABLE
+    
+	test("Global Function Show Modal", function() {
+		var options = buildMock(); 
+		
+		createModal(options.mock_aIDs,options.mock_content,options.mock_parameters,options.mock_insert,options.mock_position,options.mock_append);
+
+		var dialog = $("#the_modal_id");
+
+		ok(dialog.filter(":visible").length===1,'Is Visible after creation');	
+		
+
+		hideModal("#the_modal_id");
+
+		ok(dialog.filter(":visible").length===0,'Is no longer Visible');	
+
+		showModal("#the_modal_id");
+
+		ok(dialog.filter(":visible").length===0,'Visible Again');	
+		
+		
+	});
+	
+	test("Global Function Close Modal", function() {
+		
+	});*/
+	
+	test("Global Function Hide Modal", function() {
+		var options = buildMock(); 
+		
+		createModal(options.mock_aIDs,options.mock_content,options.mock_parameters,options.mock_insert,options.mock_position,options.mock_append);
+
+		var dialog = $("#the_modal_id");
+
+		ok(dialog.filter(":visible").length===1,'Is Visible after creation');	
+		
+
+		hideModal("#the_modal_id");
+
+		ok(dialog.filter(":visible").length===0,'Is no longer Visible');	
+		
+		
+	});
+	
+	test("Global Function Find Pos", function() {
+
+		var options = buildMock(); 
+		
+		createModal(options.mock_aIDs,options.mock_content,options.mock_parameters,options.mock_insert,options.mock_position,options.mock_append);
+
+		dialog = $("#the_modal_id");
+
+		var position = findPos(findPos(dialog.get(0)));
+
+
+		//Not sure what to test here....
+		
+		
+	});
+	
+	test("Global Function Create Modal", function() {
+
+		var options = buildMock(); 
+		
+		createModal(options.mock_aIDs,options.mock_content,options.mock_parameters,options.mock_insert,options.mock_position,options.mock_append);
+	
+		expect(10);
+	
+		//check class:
+		//ui-widget ui-widget-content ui-corner-all ui-jqdialog
+	
+		var dialog = $("#the_modal_id");
+		ok(dialog.hasClass("ui-widget"),'Is UI Widget');
+		ok(dialog.hasClass("ui-widget-content"),'Is UI Widget Content');
+		ok(dialog.hasClass("ui-corner-all"),'Is UI Widget Corner-All');
+		ok(dialog.hasClass("ui-jqdialog"),'Is UI JQ dialog');
+	
+		ok(dialog.filter(":visible").length===1,'Is Visible');
+
+			
+	
+		//check content
+		ok(dialog.text()==="Some CaptionHTML Content",'Dialog Text Correct');
+	
+		//check Size 
+		ok(dialog.innerWidth() === 300,"Width Ok");
+		ok(dialog.innerHeight() === 200,"Height Ok");	
+	
+		//Checking Callbacks..
+		stop(400);
+		dialog.find('a').click();
+		
+		ok(dialog.filter(":visible").length===0,'Is no longer Visible');	
+		
+		
+	
+		
+		
+		
+	});
+	
+	test("Global Function View Modal", function() {
+		var options = buildMock(); 
+		
+		createModal(options.mock_aIDs,options.mock_content,options.mock_parameters,options.mock_insert,options.mock_position,options.mock_append);
+
+		var dialog = $("#the_modal_id");
+
+		ok(dialog.filter(":visible").length===1,'Is Visible after creation');	
+		
+
+		hideModal("#the_modal_id");
+
+		ok(dialog.filter(":visible").length===0,'Is no longer Visible');	
+
+		viewModal("#the_modal_id");
+
+		ok(dialog.filter(":visible").length===1,'Is Visible once more');			
+		
+	});
+	
+	test("Global Function Info Dialog", function() {
+		expect(7);
+
+		info_dialog("Test Caption","Test Content");
+		//stop();
+
+		var dialog = $("#info_dialog");
+
+		//Check Classes
+		//ui-widget ui-widget-content ui-corner-all ui-jqdialog
+		ok(dialog.hasClass("ui-widget"),'Is UI Widget');
+		ok(dialog.hasClass("ui-widget-content"),'Is UI Widget Content');
+		ok(dialog.hasClass("ui-corner-all"),'Is UI Widget Corner-All');
+		ok(dialog.hasClass("ui-jqdialog"),'Is UI JQ dialog');
+
+		ok(dialog.filter(":visible").length===1,'Is Visible');
+				
+		//check content
+		ok(dialog.text()==="Test CaptionTest Content",'Dialog Text Correct');
+
+		//stop(100);
+		//close dialog
+		dialog.find('a').click();
+		
+		ok(dialog.filter(":visible").length===0,'Is no longer Visible');					
+		
+	});
+	
+	test("Global Function Create El", function() {
+		
+	});
+	
+	test("Empty Validations", function() {
+	
+		ok(isEmpty(""),"0 length String"); 
+		ok(isEmpty(" "),"One whitespace");
+		ok(isEmpty("   "),"Multiple Whitespaces");
+		ok(isEmpty("	"),"Tab Character");
+		ok(!isEmpty("s"),"S character");
+		
+});
+
+  });
+  </script>
+  
+</head>
+<body>
+ <h1 id="qunit-header">QUnit JqGrid Test: grid.common.js module tests</h1>
+ <h2 id="qunit-banner"></h2>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+ 
+ <div id="main">
+ 
+	 <div id="target">
+	 TARGET DIV
+	 </div>
+ 
+ </div>
+</body>
+</html>
