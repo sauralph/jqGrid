@@ -47,6 +47,8 @@ function buildMock(){
 	
 }
 
+
+
 $(document).ready(function(){
     /*
     
@@ -200,8 +202,227 @@ $(document).ready(function(){
 	});
 	
 	test("Global Function Create El", function() {
+
+		//First Case TextArea...
+		var eltype = "textarea";
+
+		var options = {};
+
+		var vl = "Test <strong>VALUE</strong>";
+
+		var autowidth=false;
+
+		var ajaxso = {};
 		
+		var $result = $(createEl(eltype,options,vl,autowidth, ajaxso));
+
+		ok($result.filter("textarea").length===1,"Textarea Tag generated")
+
+		ok($result.val()==="Test <strong>VALUE</strong>","Correct Value");
+
+		ok($result.attr('cols')===20,"Correct Cols");
+
+		ok($result.attr('rows')===2,"Correct Rows");
+
+		//checkbox
+		 eltype = "checkbox";
+
+		 options = {};
+
+		 vl = "1";
+
+		 autowidth=false;
+
+		 ajaxso = {};
+		
+		 $result = $(createEl(eltype,options,vl,autowidth, ajaxso));
+
+		ok($result.filter(":checkbox").length===1,"checkbox Tag TRUE generated")
+
+		ok($result.val("checked"),"Correct Value");
+
+		//checkbox FALSE
+
+		vl = "false";
+		
+		$result = $(createEl(eltype,options,vl,autowidth, ajaxso));
+
+		ok($result.filter(":checkbox").length===1,"checkbox Tag FALSE generated")
+
+		ok($result.attr("checked")===false,"Correct Value");
+
+		//select
+		eltype = "select";
+		
+		options = {value:{1:"one",2:"two",3:"three"}};
+		
+		vl = "1";
+		
+		autowidth=false;
+		
+		ajaxso = {};
+		
+		$result = $(createEl(eltype,options,vl,autowidth, ajaxso));
+
+		ok($result.filter("select").length===1,"select Tag generated")
+
+		ok($result.val()==="1","Correct Value");
+
+		ok($result.text()==="onetwothree","Correct list of values");
+
+		//alert($result.text());		
+		
+		
+		
+		 
 	});
+
+
+	test("Days in february",function() {
+
+		//1976, 1996, 2000, 2012 or 2016 are leap year
+		
+		ok(daysInFebruary(1976)===29,"1976 is Leap year");
+		ok(daysInFebruary(1996)===29,"1996 is Leap year");
+		ok(daysInFebruary(2000)===29,"2000 is Leap year");
+		ok(daysInFebruary(2012)===29,"2012 is Leap year");
+		ok(daysInFebruary(2016)===29,"2016 is Leap year");
+
+		//1900 it is NOT a leap
+
+		ok(daysInFebruary(1900)===28,"1900 is NOT Leap year");
+
+		//2010 it is NOT a leap
+
+		ok(daysInFebruary(1900)===28,"2010 is NOT Leap year");
+
+	});
+
+	test("Days in february",function() {
+
+		//1976, 1996, 2000, 2012 or 2016 are leap year
+		
+		ok(daysInFebruary(1976)===29,"1976 is Leap year");
+		ok(daysInFebruary(1996)===29,"1996 is Leap year");
+		ok(daysInFebruary(2000)===29,"2000 is Leap year");
+		ok(daysInFebruary(2012)===29,"2012 is Leap year");
+		ok(daysInFebruary(2016)===29,"2016 is Leap year");
+
+		//1900 it is NOT a leap
+
+		ok(daysInFebruary(1900)===28,"1900 is NOT Leap year");
+
+		//2010 it is NOT a leap
+
+		ok(daysInFebruary(1900)===28,"2010 is NOT Leap year");
+
+	});
+	test("Days Array",function(){
+		//this polutes the WINDOW object....
+		result = DaysArray(12);
+
+		//Extract it...to make a clean test...
+		var subject = [0];
+		
+		for ( var i = 1; i < 13; i++) {
+			 subject[i] = result[i];
+			
+		}
+		
+
+		var expected = [0,
+		    		31,29,31, //Jan,Feb,Mar
+		    		30,31,30, //Apr,May,Jun
+		    		31,31,30, //Jul,Aug,Sep
+		    		31,30,31] //Oct,Nov,Dec
+
+
+		same(subject,expected,"Days of Each Month Array Correct");
+
+
+		});
+
+
+	test("checkDate Test",function(){
+
+		var year,month,day,coin;
+		//1000 Tests pass
+		for ( var i = 0; i < 100; i++) {
+			coin = Math.floor(Math.random()*2+1);
+
+			if(coin % 2 ===1){
+				//will assert a valid date
+				year = Math.floor(Math.random()*2030+1980);
+				month =  Math.floor(Math.random()*12+1);
+				day =  Math.floor(Math.random()*28+1);
+
+				ok(checkDate('d/m/yyyy',day+'/'+month+'/'+year),'Valid Date Checked:'+day+'/'+month+'/'+year);
+				
+			}else{
+				//will assert a valid date
+				year = Math.floor(Math.random()*2030+1980);
+				month =  Math.floor(Math.random()*99+13);
+				day =  Math.floor(Math.random()*99+32);
+
+				ok(!checkDate('d/m/yyyy',day+'/'+month+'/'+year),'Invalid Date Checked:'+ day+'/'+month+'/'+year);
+
+			}
+			
+		}
+
+		ok(!checkDate('d/m/yyyy','00/00/0000'),'Invalid Date: 00/00/0000');
+		
+
+
+		});
+
+	test("checkTime Test",function(){
+
+		function pad(number, length) {
+			   
+		    var str = '' + number;
+		    while (str.length < length) {
+		        str = '0' + str;
+		    }
+		   
+		    return str;
+
+		}
+				
+
+		var hours,minutes,coin;
+		//1000 Tests pass
+		for ( var i = 0; i < 100; i++) {
+			coin = Math.floor(Math.random()*2+1);
+
+			if(coin % 2 ===1){
+				//will assert a valid date
+				hours = Math.floor(Math.random()*24);
+				minutes =  Math.floor(Math.random()*59);
+
+				minutes = pad(minutes,2);
+				hours = pad(hours,2);
+
+				ok(checkTime(hours+':'+minutes),'Valid Time Checked:'+hours+':'+minutes);
+				
+			}else{
+				//will assert a valid date
+				hours = Math.floor(Math.random()*99+25);
+				minutes =  Math.floor(Math.random()*99+59);
+
+				minutes = pad(minutes,2);
+				hours = pad(hours,2);
+				
+				ok(!checkTime(hours+':'+minutes),'Invalid Time Checked:'+hours+':'+minutes);
+
+			}
+			
+		}
+		ok(checkTime('00:00'),'Valid Time: 00:00');
+		
+
+
+		});
 	
 	test("Empty Validations", function() {
 	
