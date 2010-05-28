@@ -15,6 +15,16 @@ var closeModal = function(h) {
 	if(h.o) { h.o.remove(); }
 };
 var hideModal = function (selector,o) {
+	
+	//testing if it is a UI
+	
+	ui=jQuery(selector);
+	if(ui.hasClass("ui-dialog")){
+		ui.find(".ui-dialog-content").dialog("close");
+		return;
+	}
+	
+	
 	o = jQuery.extend({jqm : true, gb :''}, o || {});
     if(o.onClose) {
 		var oncret =  o.onClose(selector);
@@ -42,6 +52,30 @@ function findPos(obj) {
 	return [curleft,curtop];
 }
 var createModal = function(aIDs, content, p, insertSelector, posSelector, appendsel) {
+	
+	if(p.dialogEngine){
+		switch(p.dialogEngine){
+			case 'ui':
+				jQuery.extend(p,{left:0,top:0,width:300,height:200});
+				dialog = jQuery('<div>',{id:aIDs.modalcontent,html:content}).insertBefore(insertSelector).dialog({
+					title			:	p.caption,
+					close			:	p.onClose||jQuery.noop,
+					closeOnEscape	:	p.closeOnEscape,
+					position		:	[p.left,p.top],
+					width			:	p.width-7,
+					height			:	p.height-7,
+					zIndex			:	p.zIndex,
+					draggable		:	p.drag,
+					resizable		:	p.resize
+				});
+				dialog.parents(".ui-dialog").attr('id',aIDs.themodal).addClass("ui-jqdialog");
+				return;
+			case 'jqmodal':
+			default:
+		}
+	}
+	
+	
 	var mw  = document.createElement('div'), rtlsup;
 	rtlsup = jQuery(p.gbox).attr("dir") == "rtl" ? true : false;
 	mw.className= "ui-widget ui-widget-content ui-corner-all ui-jqdialog";
@@ -151,6 +185,16 @@ var viewModal = function (selector,o){
 		jqm : true,
 		jqM : true
 	}, o || {});
+	
+	
+	//testing if it is a UI
+	
+	ui=jQuery(selector);
+	if(ui.hasClass("ui-dialog")){
+		ui.find(".ui-dialog-content").dialog("open");
+		return;
+	}
+	
 	if (jQuery.fn.jqm && o.jqm === true) {
 		if(o.jqM) { jQuery(selector).attr("aria-hidden","false").jqm(o).jqmShow(); }
 		else {jQuery(selector).attr("aria-hidden","false").jqmShow();}
