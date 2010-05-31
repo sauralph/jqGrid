@@ -100,7 +100,7 @@ $.jgrid = {
 				"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
 			],
 			AmPm : ["am","pm","AM","PM"],
-			S: function (j) {return j < 11 || j > 13 ? ['st', 'nd', 'rd', 'th'][Math.min((j - 1) % 10, 3)] : 'th'},
+			S: function (j) {return j < 11 || j > 13 ? ['er', 'do', 'er', 'to'][Math.min((j - 1) % 10, 3)] : '¼'},
 			srcformat: 'Y-m-d',
 			newformat: 'd-m-Y',
 			masks : {

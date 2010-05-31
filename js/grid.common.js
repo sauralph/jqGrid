@@ -52,7 +52,7 @@ function findPos(obj) {
 	return [curleft,curtop];
 }
 var createModal = function(aIDs, content, p, insertSelector, posSelector, appendsel) {
-	
+
 	if(p.dialogEngine){
 		switch(p.dialogEngine){
 			case 'ui':
@@ -68,10 +68,42 @@ var createModal = function(aIDs, content, p, insertSelector, posSelector, append
 					draggable		:	p.drag,
 					resizable		:	p.resize
 				});
-				dialog.parents(".ui-dialog").attr('id',aIDs.themodal).addClass("ui-jqdialog");
+				dialog.addClass("ui-jqdialog-content").parents(".ui-dialog").attr('id',aIDs.themodal).addClass("ui-jqdialog");
+				
+				var buttons = {};
+				var icons = {};
+				jQuery.each(dialog.find("tr#Act_Buttons td.EditButton a"),function(index,item){
+					var $i = jQuery(item);
+					buttons[$i.text()]=function(){
+						$i.click();
+					};
+				});
+				navLinks = dialog.find("tr#Act_Buttons td.navButton a");
+						
+				buttons[">"]=function(){
+					navLinks.filter("#nData").click();
+				};
+				
+				buttons["<"]=function(){
+					navLinks.filter("#pData").click();
+				};
+				
+				//Create buttons
+				dialog.dialog('option','buttons',buttons);				
+				
+				navLinks.parents("table").hide();
+				dialog.find("form").css("overflow","none");
+				
+				//alert(buttons.toSource());
+				
 				return;
 			case 'jqmodal':
+			case 'jqm':
+				p.jqModal=true;
+				break;
 			default:
+				p.jqModal=false;
+				breake;
 		}
 	}
 	
